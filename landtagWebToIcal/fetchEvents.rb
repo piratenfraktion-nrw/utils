@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby1.9.3
 
 require 'rubygems'
+require "bundler/setup"
 require 'nokogiri'   
 require 'open-uri'
 require 'icalendar'
