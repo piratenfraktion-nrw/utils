@@ -19,15 +19,13 @@ page = Nokogiri::HTML(open(PAGE_URL))
    
 page.css("#content table tr").each do |row|
     row = Nokogiri::HTML(row.to_s)
-    i = 0
     date = ""
     summary = ""
-    row.css("td").each do |cell|
+    row.css("td").each_with_index do |cell,i|
         date = cell.inner_text.strip if i == 0
         summary = cell.inner_text.strip if i == 1
-        i += 1
     end
-    if date != ""
+    unless date.empty? and summary.empty?
         event = Event.new
         event.start = DateTime.strptime(date, "%d.%m.%Y,%H:%M")
         event.summary = summary
