@@ -1,3 +1,4 @@
 source "http://rubygems.org"
 gem "nokogiri"
 gem "icalendar"
+gem "slugify", :git => "https://github.com/Slicertje/Slugify.git"

@@ -1,3 +1,9 @@
+GIT
+  remote: https://github.com/Slicertje/Slugify.git
+  revision: 45bb070fd30406548865337297d57fc61b4931ee
+  specs:
+    slugify (1.0.5)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -10,3 +16,4 @@ PLATFORMS
 DEPENDENCIES
   icalendar
   nokogiri
+  slugify!
