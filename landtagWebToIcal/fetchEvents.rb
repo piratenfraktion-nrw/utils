@@ -26,17 +26,19 @@ page.css("#content table tr").each do |row|
     row = Nokogiri::HTML(row.to_s)
     date = ""
     summary = ""
+
     row.css("td").each_with_index do |cell,i|
         date = cell.inner_text.strip if i == 0
         summary = Nokogiri.HTML(cell.inner_html.gsub(/<br\/?>/, '-')).inner_text.strip if i == 1
     end
+
     unless date.empty? and summary.empty?
         event = Event.new
         event.start = DateTime.strptime(date, "%d.%m.%Y,%H:%M")
         if event.start >= DateTime.strptime("13.05.2012", "%d.%m.%Y")
             event.summary = summary
-
             ausschussMatches = summary.match(/\d+\.\sAusschusssitzung\s-\s(.*)/)
+
             if !ausschussMatches.nil?
                 @ausschussName = ausschussMatches[1].slugify
                 if calendars[@ausschussName].nil?

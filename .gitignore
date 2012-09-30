@@ -17,5 +17,6 @@ tmp
 _yardoc
 doc/
 
+ldap/fixNumbers/config
 
 *.ics
