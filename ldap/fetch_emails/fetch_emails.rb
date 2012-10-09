@@ -18,7 +18,7 @@ ldap = Net::LDAP.new :host => config[:host],
      }
 
 filter = Net::LDAP::Filter.eq("mail", "*")
-treebase = "dc=piratenfraktion-nrw,dc=de"
+treebase = "ou=people,dc=piratenfraktion-nrw,dc=de"
 
 ldap.search(:base => treebase, :filter => filter) do |entry|
   puts "#{entry.mail[0]}"
