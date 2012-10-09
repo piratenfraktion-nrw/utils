@@ -2,31 +2,17 @@
 # encoding: utf-8
 
 require "net-ldap"
+require "../../lib/config_reader.rb"
 
-File.open('config') do |f|
-  re_host = /^host\s*=\s*"(\w+):(\d+)"$/
-  re_username = /^username\s*=\s*"(.+)"$/
-  re_password = /^password\s*=\s*"(.+)"$/
-  
-  line = f.read
 
-  if line =~ re_host
-    _host = line.match(re_host)
-    @host = _host[1]
-    @port = _host[2]
-  elsif line =~ re_username
-    @username = line.match(re_username)[1]
-  elsif line =~ re_password
-    @password = line.match(re_password)[1]
-  end
-end
+config = read_config("config", ["username","host","port","password"])
 
 ldap = Net::LDAP.new :host => @host,
-     :port => @port,
+     :port => config[:port],
      :auth => {
            :method => :simple,
-           :username => @username,
-           :password => @password
+           :username => config[:username],
+           :password => config[:password]
      }
 
 filter = Net::LDAP::Filter.eq("telephoneNumber", "*")
