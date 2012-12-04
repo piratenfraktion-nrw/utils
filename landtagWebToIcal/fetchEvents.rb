@@ -58,7 +58,7 @@ page.css("#content table tr").each do |row|
 end
 
 def write_ics(file, cal)
-    File.open("#{file}.ics", 'w') do |f|
+    File.open("public/#{file}.ics", 'w') do |f|
         f.write(cal.to_ical) 
     end
 end
