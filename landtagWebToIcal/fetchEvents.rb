@@ -14,6 +14,7 @@ calendars = {}
 
 calendars[:Plenarsitzung] = Calendar.new
 calendars[:Rest] = Calendar.new
+calendars[:Alles] = Calendar.new
 
 PAGE_URL = "http://www.landtag.nrw.de/portal/WWW/Webmaster/GB_I/I.1/Aktuelle_Termine.jsp?mmerk=1&typ=aktuell&ausschuss=alle&maxRows=1000"
 
@@ -53,6 +54,8 @@ page.css("#content table tr").each do |row|
             else
                 calendars[:Rest].add_event(event)
             end
+
+            calendars[:Alles].add_event(event)
         end
     end
 end
