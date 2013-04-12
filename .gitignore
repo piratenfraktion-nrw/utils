@@ -20,4 +20,6 @@ doc/
 ldap/**/config
 ldap/**/config*
 
+*.swp
+
 *.ics
