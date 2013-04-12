@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby1.9.3
+#!/usr/bin/env ruby
 # encoding: utf-8
 
 require "net-ldap"
@@ -17,14 +17,13 @@ ldap = Net::LDAP.new :host => config[:host],
      }
 
 filter = Net::LDAP::Filter.ne("objectClass", "piratenfraktion") & Net::LDAP::Filter.eq("objectClass", "person")
-treebase = "dc=piratenfraktion-nrw,dc=de"
+treebase = "ou=people,dc=piratenfraktion-nrw,dc=de"
 
 ldap.search(:base => treebase, :filter => filter) do |entry|
   uid = entry.uid[0]
   puts "uid: #{uid}"
   op = [
-    [:add, :objectClass, ["piratenfraktion"]],
-    [:add, :nick, [uid]]
+    [:add, :objectClass, ["piratenfraktion"]]
   ]
   ldap.modify :dn => entry.dn, :operations => op
 end

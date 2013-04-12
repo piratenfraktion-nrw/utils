@@ -18,5 +18,6 @@ _yardoc
 doc/
 
 ldap/**/config
+ldap/**/config*
 
 *.ics
