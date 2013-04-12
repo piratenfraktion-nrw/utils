@@ -19,7 +19,7 @@ calendars[:Alles] = Calendar.new
 PAGE_URL = "http://www.landtag.nrw.de/portal/WWW/Webmaster/GB_I/I.1/Aktuelle_Termine.jsp?mmerk=1&typ=aktuell&ausschuss=alle&maxRows=1000"
 
 
-%x(rm **/*.ics)
+%x(rm /sites/cal/public/**/*.ics)
 
 page = Nokogiri::HTML(open(PAGE_URL))
 
@@ -61,7 +61,7 @@ page.css("#content table tr").each do |row|
 end
 
 def write_ics(file, cal)
-    File.open("public/landtag/#{file}.ics", 'w') do |f|
+    File.open("/sites/cal/public/landtag/#{file}.ics", 'w') do |f|
         f.write(cal.to_ical) 
     end
 end
