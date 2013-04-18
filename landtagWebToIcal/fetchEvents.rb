@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby1.9.3
+#!/usr/bin/env ruby
 
 require 'rubygems'
 require "bundler/setup"
@@ -10,6 +10,8 @@ require "slugify"
 
 include Icalendar
 
+PATH = File.expand_path File.dirname(__FILE__)
+
 calendars = {}
 
 calendars[:Plenarsitzung] = Calendar.new
@@ -19,7 +21,7 @@ calendars[:Alles] = Calendar.new
 PAGE_URL = "http://www.landtag.nrw.de/portal/WWW/Webmaster/GB_I/I.1/Aktuelle_Termine.jsp?mmerk=1&typ=aktuell&ausschuss=alle&maxRows=1000"
 
 
-%x(rm /sites/cal/public/**/*.ics)
+%x(rm #{PATH}/public/**/*.ics)
 
 page = Nokogiri::HTML(open(PAGE_URL))
 
@@ -48,20 +50,20 @@ page.css("#content table tr").each do |row|
             end
 
             if summary =~ /Plenarsitzung/
-                calendars[:Plenarsitzung].add_event(event)
+                calendars[:Plenarsitzung].add_event(event) unless calendars[:Plenarsitzung].nil?
             elsif summary =~ /Ausschusssitzung/
-                calendars[@ausschussName].add_event(event)
+                calendars[@ausschussName].add_event(event) unless calendars[@ausschussName].nil?
             else
-                calendars[:Rest].add_event(event)
+                calendars[:Rest].add_event(event) unless calendars[:Rest].nil?
             end
 
-            calendars[:Alles].add_event(event)
+            calendars[:Alles].add_event(event) unless calendars[:Alles].nil?
         end
     end
 end
 
 def write_ics(file, cal)
-    File.open("/sites/cal/public/landtag/#{file}.ics", 'w') do |f|
+    File.open("#{PATH}/public/landtag/#{file}.ics", 'w') do |f|
         f.write(cal.to_ical) 
     end
 end
