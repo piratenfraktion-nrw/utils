@@ -6,7 +6,7 @@ require 'nokogiri'
 require 'open-uri'
 require 'icalendar'
 require 'date'
-require "slugify"
+require 'slugify'
 
 include Icalendar
 
@@ -20,10 +20,9 @@ calendars[:Alles] = Calendar.new
 
 PAGE_URL = "http://www.landtag.nrw.de/portal/WWW/Webmaster/GB_I/I.1/Aktuelle_Termine.jsp?mmerk=1&typ=aktuell&ausschuss=alle&maxRows=1000"
 
+page = Nokogiri::HTML(open(PAGE_URL)) rescue exit
 
 %x(rm #{PATH}/public/**/*.ics)
-
-page = Nokogiri::HTML(open(PAGE_URL))
 
 page.css("#content table tr").each do |row|
     row = Nokogiri::HTML(row.to_s)
