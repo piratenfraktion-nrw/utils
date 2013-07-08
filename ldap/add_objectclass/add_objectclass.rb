@@ -17,6 +17,12 @@ ldap = Net::LDAP.new :host => config[:host],
      }
 
 filter = Net::LDAP::Filter.ne("objectClass", "piratenfraktion") & Net::LDAP::Filter.eq("objectClass", "person")
+filter = filter & Net::LDAP::Filter.ne('uid', 'admin')
+filter = filter & Net::LDAP::Filter.ne('uid', 'spam.8t9gvsbsm')
+filter = filter & Net::LDAP::Filter.ne('uid', 'virus-quarantine.dw68b_tg1')
+filter = filter & Net::LDAP::Filter.ne('uid', 'galsync.zlkph5tjlt')
+filter = filter & Net::LDAP::Filter.ne('uid', 'zimbradummy')
+filter = filter & Net::LDAP::Filter.ne('uid', 'ham.rccyucgc9')
 treebase = "ou=people,dc=piratenfraktion-nrw,dc=de"
 
 ldap.search(:base => treebase, :filter => filter) do |entry|
