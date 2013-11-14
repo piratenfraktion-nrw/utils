@@ -30,15 +30,30 @@ tun_dst = fork { exec build_cmd(USER_DST, REMOTE_DST, PORT_DST) }
 
 `sleep 5`
 
+def kill_tunnels(tun_src, tun_dst)
+  Process.kill 9, tun_src
+  Process.kill 9, tun_dst
+  Process.wait tun_src
+  Process.wait tun_dst
+end
+
 migrate_cmd = "mysqldump -h'127.0.0.1' --port=#{PORT_SRC} -u'#{DB_USER_SRC}' -p'#{DB_PASS_SRC}' '#{DB_NAME}' | mysql -h'127.0.0.1' --port=#{PORT_DST} -u'#{DB_USER_DST}' -p'#{DB_PASS_DST}' '#{DB_NAME}'"
+
+chek_db_cmd = "mysql -h'127.0.0.1' --port=#{PORT_DST} -u'#{DB_USER_DST}' -p'#{DB_PASS_DST}' -e'use #{DB_NAME}'"
+
+if system(chek_db_cmd)
+  puts 'db exists, exiting'
+  kill_tunnels(tun_src, tun_dst)
+  exit 1
+else
+  puts 'creating db ' + DB_NAME
+  create_db_cmd = "mysql -h'127.0.0.1' --port=#{PORT_DST} -u'#{DB_USER_DST}' -p'#{DB_PASS_DST}' -e'CREATE SCHEMA `#{DB_NAME}` DEFAULT CHARACTER SET utf8'"
+  `#{create_db_cmd}`
+end
 
 puts migrate_cmd
 
 `#{migrate_cmd}`
 
-Process.kill 9, tun_src
-Process.kill 9, tun_dst
-Process.wait tun_src
-Process.wait tun_dst
-
+kill_tunnels(tun_src, tun_dst)
 
