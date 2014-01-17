@@ -10,6 +10,8 @@ require 'slugify'
 
 include Icalendar
 
+begin
+
 PATH = File.expand_path File.dirname(__FILE__)
 
 calendars = {}
@@ -59,6 +61,9 @@ page.css("#content table tr").each do |row|
             calendars[:Alles].add_event(event) unless calendars[:Alles].nil?
         end
     end
+end
+
+rescue
 end
 
 def write_ics(file, cal)
